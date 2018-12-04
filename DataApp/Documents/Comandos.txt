@@ -1,0 +1,8 @@
+﻿--Crear una migración
+dotnet ef migrations add Initial
+
+--Actualizar base de datos
+dotnet ef database update
+
+--Ejecutar la aplicación
+dotnet run
