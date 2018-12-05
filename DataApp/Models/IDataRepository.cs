@@ -7,6 +7,10 @@ namespace DataApp.Models
 {
     public interface IDataRepository
     {
-        IEnumerable<Product> Products { get; }
+        Product GetProduct(long id);
+        IEnumerable<Product> GetAllProducts();
+        void CreateProduct(Product newProduct);
+        void UpdateProduct(Product changedProduct);
+        void DeleteProduct(long id);
     }
 }
