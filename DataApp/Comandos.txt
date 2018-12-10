@@ -1,0 +1,5 @@
+﻿// Añair una migración
+dotnet ef migrations add Initial
+
+// Actualizar la BD
+dotnet ef database update

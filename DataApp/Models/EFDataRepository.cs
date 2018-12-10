@@ -17,14 +17,13 @@ namespace DataApp.Models
 
         public Product GetProduct(long id)
         {
-            Console.WriteLine("GetProduct: " + id);
-            return new Product();
+            return context.Products.Find(id);
         }
         public IEnumerable<Product> GetAllProducts()
         {
-            Console.WriteLine("GetAllProducts");
             return context.Products;
         }
+
         public void CreateProduct(Product newProduct)
         {
             Console.WriteLine("CreateProduct: "
@@ -38,6 +37,22 @@ namespace DataApp.Models
         public void DeleteProduct(long id)
         {
             Console.WriteLine("DeleteProduct: " + id);
+        }
+
+        public IEnumerable<Product> GetFilteredProducts(string category = null, decimal? price = null)
+        {
+            IQueryable<Product> data = context.Products;
+            if(category != null)
+            {
+                data = data.Where(p => p.Category == category);
+            }
+
+            if(price != null)
+            {
+                data.Where(p => p.Price >= price);
+            }
+
+            return data;
         }
     }
 }

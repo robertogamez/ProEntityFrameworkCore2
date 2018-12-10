@@ -4,5 +4,8 @@ dotnet ef migrations add Initial
 --Actualizar base de datos
 dotnet ef database update
 
+--Eliminar la base de datos
+dotnet ef database drop --force
+
 --Ejecutar la aplicación
 dotnet run
