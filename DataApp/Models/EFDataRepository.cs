@@ -26,14 +26,25 @@ namespace DataApp.Models
 
         public void CreateProduct(Product newProduct)
         {
-            Console.WriteLine("CreateProduct: "
-            + JsonConvert.SerializeObject(newProduct));
+            newProduct.Id = 0;
+            context.Products.Add(newProduct);
+            context.SaveChanges();
+            Console.WriteLine($"New Key: {newProduct.Id}");
         }
+
         public void UpdateProduct(Product changedProduct)
         {
-            Console.WriteLine("UpdateProduct : "
-            + JsonConvert.SerializeObject(changedProduct));
+            // Sin seguimiento de cambios
+            //context.Products.Update(changedProduct);
+            //context.SaveChanges();
+
+            Product originalProduct = context.Products.Find(changedProduct.Id);
+            originalProduct.Name = changedProduct.Name;
+            originalProduct.Category = changedProduct.Category;
+            originalProduct.Price = changedProduct.Price;
+            context.SaveChanges();
         }
+
         public void DeleteProduct(long id)
         {
             Console.WriteLine("DeleteProduct: " + id);
