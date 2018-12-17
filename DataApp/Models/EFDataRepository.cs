@@ -47,7 +47,12 @@ namespace DataApp.Models
 
         public void DeleteProduct(long id)
         {
-            Console.WriteLine("DeleteProduct: " + id);
+            //Product p = context.Products.Find(id);
+            //context.Products.Remove(p);
+
+            context.Products.Remove(new Product { Id = id });
+
+            context.SaveChanges();
         }
 
         public IEnumerable<Product> GetFilteredProducts(string category = null, decimal? price = null)
