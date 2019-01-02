@@ -4,8 +4,20 @@ dotnet ef migrations add Initial
 --Actualizar base de datos
 dotnet ef database update
 
+--Actualizar una migracion especifica
+dotnet ef database update AddColorProperty
+
 --Eliminar la base de datos
 dotnet ef database drop --force
 
 --Ejecutar la aplicación
 dotnet run
+
+--Añadir una migración
+dotnet ef migrations add AddInStockProperty
+
+--Ver script de una migracion
+dotnet ef migrations script AddColorProperty AddInStockProperty
+
+--Listado de migraciones
+dotnet ef migrations list
