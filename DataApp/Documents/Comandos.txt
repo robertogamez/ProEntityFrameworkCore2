@@ -21,3 +21,15 @@ dotnet ef migrations script AddColorProperty AddInStockProperty
 
 --Listado de migraciones
 dotnet ef migrations list
+
+--Eliminar todas las migraciones aplicadas
+dotnet ef database update 0
+
+--Listado de contextos en el proyecto
+dotnet ef dbcontext list
+
+--Agregar una migracion a un contexto especifico
+dotnet ef migrations add Current --context EFDatabaseContext
+
+--Actualizar un contexto en especifico
+dotnet ef database update --context EFCustomerContext

@@ -30,7 +30,14 @@ namespace DataApp
                 options.UseSqlServer(conString);
             });
 
+            string customConString = Configuration["ConnectionStrings:CustomerConnection"];
+            services.AddDbContext<EFCustomerContext>(options =>
+            {
+                options.UseSqlServer(customConString);
+            });
+
             services.AddTransient<IDataRepository, EFDataRepository>();
+            services.AddTransient<ICustomerRepository, EFCustomerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

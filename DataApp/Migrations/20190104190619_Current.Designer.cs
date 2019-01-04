@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataApp.Migrations
 {
     [DbContext(typeof(EFDatabaseContext))]
-    [Migration("20190102154242_AddInStockProperty")]
-    partial class AddInStockProperty
+    [Migration("20190104190619_Current")]
+    partial class Current
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

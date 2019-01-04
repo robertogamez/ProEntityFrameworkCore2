@@ -2,7 +2,7 @@
 
 namespace DataApp.Migrations
 {
-    public partial class AddInStockProperty : Migration
+    public partial class Current : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
