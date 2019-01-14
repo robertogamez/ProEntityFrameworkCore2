@@ -42,7 +42,12 @@ namespace DataApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IHostingEnvironment env,
+            EFDatabaseContext prodCtx,
+            EFCustomerContext custCtx
+        )
         {
             if (env.IsDevelopment())
             {
@@ -52,6 +57,12 @@ namespace DataApp
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+
+            if (env.IsDevelopment())
+            {
+                SeedData.Seed(prodCtx);
+                SeedData.Seed(custCtx);
+            }
         }
     }
 }
