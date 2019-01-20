@@ -35,16 +35,22 @@ namespace DataApp.Models
             Console.WriteLine($"New Key: {newProduct.Id}");
         }
 
-        public void UpdateProduct(Product changedProduct)
+        public void UpdateProduct(Product changedProduct, Product originalProduct = null)
         {
-            // Sin seguimiento de cambios
-            //context.Products.Update(changedProduct);
-            //context.SaveChanges();
-
-            Product originalProduct = context.Products.Find(changedProduct.Id);
+            if (originalProduct == null)
+            {
+                originalProduct = context.Products.Find(changedProduct.Id);
+            }
+            else
+            {
+                context.Products.Attach(originalProduct);
+            }
             originalProduct.Name = changedProduct.Name;
             originalProduct.Category = changedProduct.Category;
             originalProduct.Price = changedProduct.Price;
+            originalProduct.Supplier.Name = changedProduct.Supplier.Name;
+            originalProduct.Supplier.City = changedProduct.Supplier.City;
+            originalProduct.Supplier.State = changedProduct.Supplier.State;
             context.SaveChanges();
         }
 
@@ -52,8 +58,13 @@ namespace DataApp.Models
         {
             //Product p = context.Products.Find(id);
             //context.Products.Remove(p);
+            Product p = this.GetProduct(id);
+            context.Products.Remove(p);
 
-            context.Products.Remove(new Product { Id = id });
+            if(p.Supplier != null)
+            {
+                context.Remove<Supplier>(p.Supplier);
+            }
 
             context.SaveChanges();
         }
