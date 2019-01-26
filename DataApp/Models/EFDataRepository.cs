@@ -19,7 +19,9 @@ namespace DataApp.Models
         public Product GetProduct(long id)
         {
             return context.Products
-                .Include(p => p.Supplier).First(p => p.Id == id);
+                .Include(p => p.Supplier)
+                .ThenInclude(c => c.Contact)
+                .ThenInclude(c => c.Location).First(p => p.Id == id);
         }
 
         public IEnumerable<Product> GetAllProducts()
