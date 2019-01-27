@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,20 @@ namespace DataApp.Models
 
         public IEnumerable<Supplier> GetAll()
         {
-            return context.Suppliers;
+            return context.Suppliers.Include(s => s.Products);
+            //IEnumerable<Supplier> data = context.Suppliers.ToArray();
+            //foreach (Supplier s in data)
+            //{
+            //    context.Entry(s).Collection(e => e.Products)
+            //        .Query()
+            //        .Where(p => p.Price > 50)
+            //        .Load();
+            //}
+
+            //return data;
+            //context.Products.Where(p => p.Supplier != null && p.Price > 50).Load();
+
+            //return context.Suppliers;
         }
 
         public void Create(Supplier newSupplier)
