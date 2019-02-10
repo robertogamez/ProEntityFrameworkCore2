@@ -21,6 +21,7 @@ namespace DataApp.Controllers
         public IActionResult Index()
         {
             ViewBag.SupplierEditId = TempData["SupplierEditId"];
+            ViewBag.SupplierCreateId = TempData["SupplierCreateId"];
             return View(supplierRepository.GetAll());
         }
 
@@ -37,6 +38,10 @@ namespace DataApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
+        public IActionResult Create(long id)
+        {
+            TempData["SupplierCreateId"] = id;
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
