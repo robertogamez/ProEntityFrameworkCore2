@@ -20,5 +20,39 @@ namespace DataApp.Controllers
         {
             return View(context.Set<ContactDetails>().Include(cd => cd.Supplier));
         }
+
+        public IActionResult Create() => View("ContactEditor");
+
+        public IActionResult Edit(long id)
+        {
+            ViewBag.Suppliers = context.Suppliers.Include(s => s.Contact);
+
+            return View("ContactEditor", context.Set<ContactDetails>()
+                .Include(cd => cd.Supplier).First(cd => cd.Id == id));
+        }
+
+        [HttpPost]
+        public IActionResult Update(ContactDetails details,
+            long? targetSupplierId, long[] spares)
+        {
+            if(details.Id == 0)
+            {
+                context.Add(details);
+            } else
+            {
+                context.Update(details);
+                if (targetSupplierId.HasValue)
+                {
+                    if (spares.Contains(targetSupplierId.Value))
+                    {
+                        details.SupplierId = targetSupplierId.Value;
+                    }
+                }
+            }
+
+            context.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
