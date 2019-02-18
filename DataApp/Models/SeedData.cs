@@ -17,6 +17,7 @@ namespace DataApp.Models
                     && prodCtx.Products.Count() == 0)
                 {
                     prodCtx.Products.AddRange(Products);
+                    prodCtx.Set<Shipment>().AddRange(Shipments);
                 }
                 else if (context is EFCustomerContext custCtx
                     && custCtx.Customers.Count() == 0)
@@ -34,6 +35,7 @@ namespace DataApp.Models
                 && prodCtx.Products.Count() > 0)
             {
                 prodCtx.Products.RemoveRange(prodCtx.Products);
+                prodCtx.Set<Shipment>().RemoveRange(prodCtx.Set<Shipment>());
             }
             else if (context is EFCustomerContext custCtx
                 && custCtx.Customers.Count() > 0)
@@ -44,7 +46,23 @@ namespace DataApp.Models
             context.SaveChanges();
         }
 
-        private static Product[] Products {
+        public static Shipment[] Shipments
+        {
+            get
+            {
+                return new Shipment[] {
+                    new Shipment { ShipperName = "Express Co",
+                    StartCity = "New York", EndCity = "San Jose"},
+                    new Shipment { ShipperName = "Tortoise Shipping",
+                    StartCity = "Boston", EndCity = "Chicago"},
+                    new Shipment { ShipperName = "Air Express",
+                    StartCity = "Miami", EndCity = "Seattle"}
+               };
+            }
+        }
+
+        private static Product[] Products
+        {
             get
             {
                 Product[] products = new Product[] {
@@ -120,7 +138,7 @@ namespace DataApp.Models
 
                 return products;
             }
-             
+
         }
 
         private static Customer[] Customers = {
