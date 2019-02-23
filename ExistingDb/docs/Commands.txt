@@ -1,0 +1,2 @@
+﻿--Scaffolding Database
+dotnet ef dbcontext scaffold "Server=(localdb)\MSSQLLocalDB;Database=ZoomShoesDb" "Microsoft.EntityFrameworkCore.SqlServer" --output-dir "Models/Scaffold" --context ScaffoldContext
