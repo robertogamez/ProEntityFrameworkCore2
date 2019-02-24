@@ -1,2 +1,5 @@
 ﻿--Scaffolding Database
-dotnet ef dbcontext scaffold "Server=(localdb)\MSSQLLocalDB;Database=ZoomShoesDb" "Microsoft.EntityFrameworkCore.SqlServer" --output-dir "Models/Scaffold" --context ScaffoldContext
+dotnet ef dbcontext scaffold "Server=(localdb)\MSSQLLocalDB;Database=ZoomShoesDb" "Microsoft.EntityFrameworkCore.SqlServer" --output-dir "Models/Scaffold" --context ZoomShoesDbContext
+
+--Updating the Data Model
+dotnet ef dbcontext scaffold "Server=(localdb)\MSSQLLocalDB;Database=ZoomShoesDb" "Microsoft.EntityFrameworkCore.SqlServer" --output-dir "Models/Scaffold" --context ZoomShoesDbContext --force --no-build 
