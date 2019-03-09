@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,5 +11,14 @@ namespace ExistingDb.Models.Manual
         public long Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+
+        [Column("ColorId")]
+        public long StyleId { get; set; }
+
+        [ForeignKey("StyleId")]
+        public Style Style { get; set; }
+
+        public long WidthId { get; set; }
+        public ShoeWidth Width { get; set; }
     }
 }

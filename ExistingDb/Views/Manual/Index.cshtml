@@ -19,4 +19,38 @@
             </tr>
         }
     </table>
+
+    <div class="row">
+        <div class="col">
+            <h5 class="bg-primary p-2 text-white">Styles</h5>
+            <table class="table table-striped table-sm">
+                <tr>
+                    <th>UniqueIdent</th>
+                    <th>Style Name</th>
+                    <th>Main Color</th>
+                    <th>Highlight Color</th>
+                </tr>
+                @foreach (Style s in ViewBag.Styles)
+                {
+                    <tr>
+                        <td>@s.UniqueIdent</td>
+                        <td>@s.StyleName</td>
+                        <td>@s.MainColor</td>
+                        <td>@s.HighlightColor</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="col">
+            <h5 class="bg-primary p-2 text-white">Widths</h5>
+            <table class="table table-striped table-sm">
+                <tr><th>UniqueIdent</th><th>Name</th></tr>
+                @foreach (ShoeWidth s in ViewBag.Widths)
+                {
+                    <tr><td>@s.UniqueIdent</td><td>@s.WidthName</td></tr>
+                }
+            </table>
+        </div>
+    </div>
+
 </div>

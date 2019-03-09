@@ -13,6 +13,12 @@ namespace ExistingDb.Controllers
 
         public ManualController(ManualContext ctx) => context = ctx;
 
-        public IActionResult Index() => View(context.Shoes);
+        public IActionResult Index()
+        {
+            ViewBag.Styles = context.ShoeStyles;
+            ViewBag.Widths = context.ShoeWidths;
+
+            return View(context.Shoes);
+        }
     }
 }

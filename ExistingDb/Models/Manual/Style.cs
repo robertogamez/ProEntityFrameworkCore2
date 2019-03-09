@@ -19,5 +19,8 @@ namespace ExistingDb.Models.Manual
 
         public string MainColor { get; set; }
         public string HighlightColor { get; set; }
+
+        [InverseProperty(nameof(Shoe.Style))]
+        public IEnumerable<Shoe> Products { get; set; }
     }
 }
