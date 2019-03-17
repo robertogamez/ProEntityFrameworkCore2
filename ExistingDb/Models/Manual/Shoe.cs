@@ -20,5 +20,8 @@ namespace ExistingDb.Models.Manual
 
         public long WidthId { get; set; }
         public ShoeWidth Width { get; set; }
+
+        public SalesCampaign Campaign { get; set; }
+        public IEnumerable<ShoeCategoryJunction> Categories { get; set; }
     }
 }
