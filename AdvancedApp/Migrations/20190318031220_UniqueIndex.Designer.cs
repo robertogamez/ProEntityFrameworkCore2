@@ -9,22 +9,24 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    [Migration("20190317045716_Initial")]
-    partial class Initial
+    [Migration("20190318031220_UniqueIndex")]
+    partial class UniqueIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("Relational:Sequence:.EntityFrameworkHiLoSequence", "'EntityFrameworkHiLoSequence', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AdvancedApp.Models.Employee", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "EntityFrameworkHiLoSequence")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<string>("FamilyName");
 
@@ -35,6 +37,11 @@ namespace AdvancedApp.Migrations
                     b.Property<decimal>("Salary");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SSN")
+                        .IsUnique()
+                        .HasName("SSNIndex")
+                        .HasFilter("[SSN] IS NOT NULL");
 
                     b.ToTable("Employees");
                 });

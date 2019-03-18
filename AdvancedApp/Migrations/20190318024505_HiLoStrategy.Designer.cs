@@ -3,14 +3,16 @@ using AdvancedApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    partial class AdvancedContextModelSnapshot : ModelSnapshot
+    [Migration("20190318024505_HiLoStrategy")]
+    partial class HiLoStrategy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,43 +32,13 @@ namespace AdvancedApp.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<string>("SSN")
-                        .IsRequired();
+                    b.Property<string>("SSN");
 
                     b.Property<decimal>("Salary");
 
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("AdvancedApp.Models.SecondaryIdentity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("InActiveUse");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PrimarySSN");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PrimarySSN")
-                        .IsUnique()
-                        .HasFilter("[PrimarySSN] IS NOT NULL");
-
-                    b.ToTable("SecondaryIdentity");
-                });
-
-            modelBuilder.Entity("AdvancedApp.Models.SecondaryIdentity", b =>
-                {
-                    b.HasOne("AdvancedApp.Models.Employee", "PrimaryIdentity")
-                        .WithOne("OtherIdentity")
-                        .HasForeignKey("AdvancedApp.Models.SecondaryIdentity", "PrimarySSN")
-                        .HasPrincipalKey("AdvancedApp.Models.Employee", "SSN");
                 });
 #pragma warning restore 612, 618
         }
