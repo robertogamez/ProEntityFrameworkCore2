@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    [Migration("20190318032223_AlternateKey")]
-    partial class AlternateKey
+    [Migration("20190325023547_CompositeKey")]
+    partial class CompositeKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,26 +18,19 @@ namespace AdvancedApp.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("Relational:Sequence:.EntityFrameworkHiLoSequence", "'EntityFrameworkHiLoSequence', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AdvancedApp.Models.Employee", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "EntityFrameworkHiLoSequence")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
-
-                    b.Property<string>("FamilyName");
+                    b.Property<string>("SSN");
 
                     b.Property<string>("FirstName");
 
-                    b.Property<string>("SSN")
-                        .IsRequired();
+                    b.Property<string>("FamilyName");
 
                     b.Property<decimal>("Salary");
 
-                    b.HasKey("Id");
+                    b.HasKey("SSN", "FirstName", "FamilyName");
 
                     b.ToTable("Employees");
                 });
@@ -52,13 +45,17 @@ namespace AdvancedApp.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("PrimaryFamilyName");
+
+                    b.Property<string>("PrimaryFirstName");
+
                     b.Property<string>("PrimarySSN");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PrimarySSN")
+                    b.HasIndex("PrimarySSN", "PrimaryFirstName", "PrimaryFamilyName")
                         .IsUnique()
-                        .HasFilter("[PrimarySSN] IS NOT NULL");
+                        .HasFilter("[PrimarySSN] IS NOT NULL AND [PrimaryFirstName] IS NOT NULL AND [PrimaryFamilyName] IS NOT NULL");
 
                     b.ToTable("SecondaryIdentity");
                 });
@@ -67,8 +64,7 @@ namespace AdvancedApp.Migrations
                 {
                     b.HasOne("AdvancedApp.Models.Employee", "PrimaryIdentity")
                         .WithOne("OtherIdentity")
-                        .HasForeignKey("AdvancedApp.Models.SecondaryIdentity", "PrimarySSN")
-                        .HasPrincipalKey("AdvancedApp.Models.Employee", "SSN");
+                        .HasForeignKey("AdvancedApp.Models.SecondaryIdentity", "PrimarySSN", "PrimaryFirstName", "PrimaryFamilyName");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdvancedApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdvancedApp.Controllers
 {
@@ -21,16 +22,21 @@ namespace AdvancedApp.Controllers
             return View(context.Employees);
         }
 
-        public IActionResult Edit(long id)
+        public IActionResult Edit(string SSN, string firstName, string familyName)
         {
-            return View(id == default(long)
-            ? new Employee() : context.Employees.Find(id));
+            return View(string.IsNullOrWhiteSpace(SSN)
+            ? new Employee() : context.Employees.Include(e => e.OtherIdentity)
+                    .First(e => e.SSN == SSN
+                            && e.FirstName == firstName
+                            && e.FamilyName == familyName));
         }
 
         [HttpPost]
         public IActionResult Update(Employee employee)
         {
-            if (employee.Id == default(long))
+            if (context.Employees.Count(e => e.SSN == employee.SSN
+                && e.FirstName == employee.FirstName
+                && e.FamilyName == employee.FamilyName) == 0)
             {
                 context.Add(employee);
             }
