@@ -11,7 +11,7 @@ namespace AdvancedApp.Models
         public AdvancedContext(DbContextOptions<AdvancedContext> options)
             : base(options)
         {
-
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public DbSet<Employee> Employees { get; set; }
