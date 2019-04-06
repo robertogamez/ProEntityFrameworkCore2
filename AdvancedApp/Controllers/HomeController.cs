@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AdvancedApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,18 @@ namespace AdvancedApp.Controllers
             this.context = ctx;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchTerm)
         {
-            return View(context.Employees.AsNoTracking());
+            IQueryable<Employee> data = context.Employees;
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                data = data.Where(e => EF.Functions.Like(e.FirstName, searchTerm));
+            }
+            HttpClient client = new HttpClient();
+            ViewBag.PageSize = (await client.GetAsync("http://apress.com"))
+                .Content.Headers.ContentLength;
+
+            return View(await data.ToListAsync());
         }
 
         public IActionResult Edit(string SSN, string firstName, string familyName)
@@ -49,6 +59,16 @@ namespace AdvancedApp.Controllers
             }
 
             context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Employee employee)
+        {
+            context.Attach(employee);
+            employee.SoftDeleted = true;
+            context.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
     }
