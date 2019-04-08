@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +28,12 @@ namespace AdvancedApp
         {
             services.AddMvc();
             string connString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<AdvancedContext>(options => options.UseSqlServer(connString));
+            services.AddDbContext<AdvancedContext>(options =>
+                options.UseSqlServer(connString)
+                        .ConfigureWarnings(warning =>
+                            warning.Throw(RelationalEventId.QueryClientEvaluationWarning)
+                        )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

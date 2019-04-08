@@ -18,18 +18,26 @@ namespace AdvancedApp.Controllers
             this.context = ctx;
         }
 
+        private static Func<AdvancedContext, string, IEnumerable<Employee>>
+            query = EF.CompileQuery((AdvancedContext context, string searchTerm) =>
+                context.Employees.Where(e => EF.Functions.Like(e.FirstName, searchTerm)));
+
         public async Task<IActionResult> Index(string searchTerm)
         {
-            IQueryable<Employee> data = context.Employees;
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                data = data.Where(e => EF.Functions.Like(e.FirstName, searchTerm));
-            }
+            //IQueryable<Employee> data = context.Employees;
+            //if (!string.IsNullOrEmpty(searchTerm))
+            //{
+            //    data = data.Where(e => EF.Functions.Like(e.FirstName, searchTerm));
+            //}
             HttpClient client = new HttpClient();
             ViewBag.PageSize = (await client.GetAsync("http://apress.com"))
                 .Content.Headers.ContentLength;
 
-            return View(await data.ToListAsync());
+            return View(
+                string.IsNullOrEmpty(searchTerm) 
+                    ? await context.Employees.ToListAsync()
+                    : query(context, searchTerm)
+            );
         }
 
         public IActionResult Edit(string SSN, string firstName, string familyName)
