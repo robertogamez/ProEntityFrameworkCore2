@@ -29,15 +29,16 @@ namespace AdvancedApp.Controllers
             //{
             //    data = data.Where(e => EF.Functions.Like(e.FirstName, searchTerm));
             //}
-            HttpClient client = new HttpClient();
-            ViewBag.PageSize = (await client.GetAsync("http://apress.com"))
-                .Content.Headers.ContentLength;
+            //HttpClient client = new HttpClient();
+            //ViewBag.PageSize = (await client.GetAsync("http://apress.com"))
+            //    .Content.Headers.ContentLength;
 
-            return View(
-                string.IsNullOrEmpty(searchTerm) 
-                    ? await context.Employees.ToListAsync()
-                    : query(context, searchTerm)
-            );
+            //return View(
+            //    string.IsNullOrEmpty(searchTerm) 
+            //        ? await context.Employees.ToListAsync()
+            //        : query(context, searchTerm)
+            //);
+            return View(context.Employees.Include(e => e.OtherIdentity));
         }
 
         public IActionResult Edit(string SSN, string firstName, string familyName)
@@ -53,17 +54,30 @@ namespace AdvancedApp.Controllers
         [HttpPost]
         public IActionResult Update(Employee employee)
         {
-            Employee existing = context.Employees
-                .AsTracking()
-                .First(e => e.SSN == employee.SSN && e.FirstName == employee.FirstName
-                        && e.FamilyName == employee.FamilyName);
-            if (existing == null)
+            //Employee existing = context.Employees
+            //    .AsTracking()
+            //    .First(e => e.SSN == employee.SSN && e.FirstName == employee.FirstName
+            //            && e.FamilyName == employee.FamilyName);
+            //if (existing == null)
+            //{
+            //    context.Add(employee);
+            //}
+            //else
+            //{
+            //    existing.Salary = employee.Salary;
+            //}
+
+            //context.SaveChanges();
+            //return RedirectToAction(nameof(Index));
+            if (context.Employees.Count(e => e.SSN == employee.SSN
+                    && e.FirstName == employee.FirstName
+                    && e.FamilyName == employee.FamilyName) == 0)
             {
                 context.Add(employee);
             }
             else
             {
-                existing.Salary = employee.Salary;
+                context.Update(employee);
             }
 
             context.SaveChanges();

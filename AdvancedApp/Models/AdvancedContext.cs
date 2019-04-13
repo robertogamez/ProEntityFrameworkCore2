@@ -28,6 +28,9 @@ namespace AdvancedApp.Models
                 e.FamilyName
             });
 
+            modelBuilder.Entity<Employee>()
+                .Property(e => e.Salary).HasColumnType("decimal(8, 2)");
+
             //modelBuilder.Entity<Employee>()
             //    .Property(e => e.Id).ForSqlServerUseSequenceHiLo();
 
@@ -51,6 +54,9 @@ namespace AdvancedApp.Models
                     s.PrimaryFirstName,
                     s.PrimaryFamilyName
                 });
+
+            modelBuilder.Entity<SecondaryIdentity>()
+                .Property(e => e.Name).HasMaxLength(100);
 
             base.OnModelCreating(modelBuilder);
         }

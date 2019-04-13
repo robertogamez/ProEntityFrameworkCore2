@@ -7,11 +7,12 @@
 <table class="table table-sm table-striped">
     <thead>
         <tr>
-            <th>Key</th>
             <th>SSN</th>
             <th>First Name</th>
             <th>Family Name</th>
             <th>Salary</th>
+            <th>Other Name</th>
+            <th>In Use</th>
             <th></th>
         </tr>
     </thead>
@@ -20,11 +21,12 @@
         @foreach (Employee e in Model)
         {
             <tr>
-                <td>@e.Id</td>
                 <td>@e.SSN</td>
                 <td>@e.FirstName</td>
                 <td>@e.FamilyName</td>
                 <td>@e.Salary</td>
+                <td>@(e.OtherIdentity?.Name ?? "(None)")</td>
+                <td>@(e.OtherIdentity?.InActiveUse.ToString() ?? "(N/A)")</td>
                 <td class="text-right">
                     <form>
                         <input type="hidden" name="SSN" value="@e.SSN" />
