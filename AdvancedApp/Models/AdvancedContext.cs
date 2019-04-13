@@ -29,7 +29,12 @@ namespace AdvancedApp.Models
             });
 
             modelBuilder.Entity<Employee>()
-                .Property(e => e.Salary).HasColumnType("decimal(8, 2)");
+                .Property(e => e.Salary)
+                .HasColumnType("decimal(8, 2)")
+                .HasField("databaseSalary")
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            modelBuilder.Entity<Employee>().Property<DateTime>("LastUpdated");
 
             //modelBuilder.Entity<Employee>()
             //    .Property(e => e.Id).ForSqlServerUseSequenceHiLo();

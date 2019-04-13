@@ -38,7 +38,9 @@ namespace AdvancedApp.Controllers
             //        ? await context.Employees.ToListAsync()
             //        : query(context, searchTerm)
             //);
-            return View(context.Employees.Include(e => e.OtherIdentity));
+            return View(context.Employees
+                .Include(e => e.OtherIdentity)
+                .OrderByDescending(e => EF.Property<DateTime>(e, "LastUpdated")));
         }
 
         public IActionResult Edit(string SSN, string firstName, string familyName)
@@ -52,7 +54,7 @@ namespace AdvancedApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Employee employee)
+        public IActionResult Update(Employee employee, decimal salary)
         {
             //Employee existing = context.Employees
             //    .AsTracking()
@@ -69,15 +71,31 @@ namespace AdvancedApp.Controllers
 
             //context.SaveChanges();
             //return RedirectToAction(nameof(Index));
-            if (context.Employees.Count(e => e.SSN == employee.SSN
-                    && e.FirstName == employee.FirstName
-                    && e.FamilyName == employee.FamilyName) == 0)
+
+            //if (context.Employees.Count(e => e.SSN == employee.SSN
+            //        && e.FirstName == employee.FirstName
+            //        && e.FamilyName == employee.FamilyName) == 0)
+            //{
+            //    context.Add(employee);
+            //}
+            //else
+            //{
+            //    context.Update(employee);
+            //}
+            Employee existing = context.Employees
+                .Find(employee.SSN, employee.FirstName, employee.FamilyName);
+
+            if(existing == null)
             {
+                context.Entry(employee).Property("LastUpdated")
+                    .CurrentValue = System.DateTime.Now;
                 context.Add(employee);
             }
             else
             {
-                context.Update(employee);
+                existing.Salary = salary;
+                context.Entry(existing).Property("LastUpdated")
+                    .CurrentValue = System.DateTime.Now;
             }
 
             context.SaveChanges();
