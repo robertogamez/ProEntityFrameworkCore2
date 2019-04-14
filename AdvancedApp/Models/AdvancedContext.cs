@@ -32,9 +32,12 @@ namespace AdvancedApp.Models
                 .Property(e => e.Salary)
                 .HasColumnType("decimal(8, 2)")
                 .HasField("databaseSalary")
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .IsConcurrencyToken();
 
-            modelBuilder.Entity<Employee>().Property<DateTime>("LastUpdated");
+            modelBuilder.Entity<Employee>()
+                .Property<DateTime>("LastUpdated")
+                .HasDefaultValue(new DateTime(2019, 12, 12));
 
             //modelBuilder.Entity<Employee>()
             //    .Property(e => e.Id).ForSqlServerUseSequenceHiLo();

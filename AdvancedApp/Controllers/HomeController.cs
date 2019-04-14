@@ -54,7 +54,7 @@ namespace AdvancedApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update(Employee employee, decimal salary)
+        public IActionResult Update(Employee employee, decimal originalSalary)
         {
             //Employee existing = context.Employees
             //    .AsTracking()
@@ -82,20 +82,39 @@ namespace AdvancedApp.Controllers
             //{
             //    context.Update(employee);
             //}
-            Employee existing = context.Employees
-                .Find(employee.SSN, employee.FirstName, employee.FamilyName);
+            //Employee existing = context.Employees
+            //    .Find(employee.SSN, employee.FirstName, employee.FamilyName);
 
-            if(existing == null)
+            //if(existing == null)
+            //{
+            //    //context.Entry(employee).Property("LastUpdated")
+            //    //    .CurrentValue = System.DateTime.Now;
+            //    context.Add(employee);
+            //}
+            //else
+            //{
+            //    existing.Salary = salary;
+            //    context.Entry(existing).Property("LastUpdated")
+            //        .CurrentValue = System.DateTime.Now;
+            //}
+            if (context.Employees.Count(e => e.SSN == employee.SSN
+                && e.FirstName == employee.FirstName
+                && e.FamilyName == employee.FamilyName) == 0)
             {
-                context.Entry(employee).Property("LastUpdated")
-                    .CurrentValue = System.DateTime.Now;
                 context.Add(employee);
             }
             else
             {
-                existing.Salary = salary;
-                context.Entry(existing).Property("LastUpdated")
-                    .CurrentValue = System.DateTime.Now;
+                Employee e = new Employee
+                {
+                    SSN = employee.SSN,
+                    FirstName = employee.FirstName,
+                    FamilyName = employee.FamilyName,
+                    Salary = originalSalary
+                };
+                context.Employees.Attach(e);
+                e.Salary = employee.Salary;
+                e.LastUpdated = DateTime.Now;
             }
 
             context.SaveChanges();

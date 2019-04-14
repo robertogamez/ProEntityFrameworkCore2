@@ -10,6 +10,8 @@
 
 <form asp-action="Update" method="post">
     <input type="hidden" asp-for="Id" />
+    <input type="hidden" name="originalSalary" value="@Model.Salary" />
+
     <div class="form-group">
         <label class="form-control-label" asp-for="SSN"></label>
         <input class="form-control" asp-for="SSN" readonly="@Model.SSN" />

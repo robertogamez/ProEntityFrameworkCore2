@@ -16,17 +16,13 @@ namespace AdvancedApp.Models
         public decimal Salary
         {
             get => databaseSalary;
-            set
-            {
-                if(value % 2 == 0)
-                {
-                    databaseSalary = value;
-                }
-            }
+            set => databaseSalary = value;
         }
 
         public SecondaryIdentity OtherIdentity { get; set; }
 
         public bool SoftDeleted { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
 }
