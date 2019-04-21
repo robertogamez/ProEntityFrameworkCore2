@@ -110,7 +110,8 @@ namespace AdvancedApp.Controllers
                     SSN = employee.SSN,
                     FirstName = employee.FirstName,
                     FamilyName = employee.FamilyName,
-                    Salary = originalSalary
+                    Salary = originalSalary,
+                    RowVersion = employee.RowVersion
                 };
                 context.Employees.Attach(e);
                 e.Salary = employee.Salary;

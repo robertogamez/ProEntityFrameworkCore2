@@ -24,5 +24,6 @@ namespace AdvancedApp.Models
         public bool SoftDeleted { get; set; }
 
         public DateTime LastUpdated { get; set; }
+        public byte[] RowVersion { get; set; }
     }
 }
