@@ -38,6 +38,8 @@ namespace AdvancedApp.Controllers
             //        ? await context.Employees.ToListAsync()
             //        : query(context, searchTerm)
             //);
+            ViewBag.Secondaries = context.Set<SecondaryIdentity>();
+
             return View(context.Employees
                 .Include(e => e.OtherIdentity)
                 .OrderByDescending(e => EF.Property<DateTime>(e, "LastUpdated")));
@@ -125,8 +127,9 @@ namespace AdvancedApp.Controllers
         [HttpPost]
         public IActionResult Delete(Employee employee)
         {
-            context.Attach(employee);
-            employee.SoftDeleted = true;
+            context.Remove(employee);
+            //context.Attach(employee);
+            //employee.SoftDeleted = true;
             context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
