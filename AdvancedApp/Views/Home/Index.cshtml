@@ -36,9 +36,13 @@
                         <input type="hidden" name="FamilyName"
                                value="@e.FamilyName" />
                         <input type="hidden" name="RowVersion" asp-for="@e.RowVersion" />
+                        <input type="hidden" name="OtherIdentity.Id" value="@e.OtherIdentity.Id" />
                         <button type="submit" asp-action="Delete" formmethod="post"
                                 class="btn btn-sm btn-danger">
                             Delete
+                        </button>
+                        <button type="submit" asp-action="Restore" class="btn btn-sm btn-success">
+                            Restore
                         </button>
                         <button type="submit" asp-action="Edit" formmethod="get"
                                 class="btn btn-sm btn-primary">
@@ -50,6 +54,11 @@
         }
     </tbody>
 </table>
+<div class="text-center">
+    <form method="post" asp-action="DeleteAll">
+        <button type="submit" class="btn btn-danger">Delete All</button>
+    </form>
+</div>
 
 @if (ViewBag.PageSize != null)
 {

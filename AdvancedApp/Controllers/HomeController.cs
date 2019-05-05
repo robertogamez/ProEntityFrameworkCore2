@@ -38,11 +38,14 @@ namespace AdvancedApp.Controllers
             //        ? await context.Employees.ToListAsync()
             //        : query(context, searchTerm)
             //);
-            ViewBag.Secondaries = context.Set<SecondaryIdentity>();
-
-            return View(context.Employees
+            IEnumerable<Employee> data = context.Employees
                 .Include(e => e.OtherIdentity)
-                .OrderByDescending(e => EF.Property<DateTime>(e, "LastUpdated")));
+                .OrderByDescending(e => e.LastUpdated)
+                .ToArray();
+            //ViewBag.Secondaries = context.Set<SecondaryIdentity>();
+            ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
+
+            return View(data);
         }
 
         public IActionResult Edit(string SSN, string firstName, string familyName)
@@ -127,9 +130,9 @@ namespace AdvancedApp.Controllers
         [HttpPost]
         public IActionResult Delete(Employee employee)
         {
-            context.Remove(employee);
-            //context.Attach(employee);
-            //employee.SoftDeleted = true;
+            //context.Remove(employee);
+            context.Attach(employee);
+            employee.SoftDeleted = true;
             context.SaveChanges();
 
             return RedirectToAction(nameof(Index));

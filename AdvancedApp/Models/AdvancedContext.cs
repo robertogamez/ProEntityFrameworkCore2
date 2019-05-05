@@ -65,7 +65,7 @@ namespace AdvancedApp.Models
                     s.PrimaryFirstName,
                     s.PrimaryFamilyName
                 })
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<SecondaryIdentity>()
                 .Property(e => e.Name).HasMaxLength(100);
