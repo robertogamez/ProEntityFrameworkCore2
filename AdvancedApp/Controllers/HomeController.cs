@@ -22,7 +22,7 @@ namespace AdvancedApp.Controllers
             query = EF.CompileQuery((AdvancedContext context, string searchTerm) =>
                 context.Employees.Where(e => EF.Functions.Like(e.FirstName, searchTerm)));
 
-        public async Task<IActionResult> Index(string searchTerm)
+        public async Task<IActionResult> Index(string searchTerm, decimal salary = 0)
         {
             //IQueryable<Employee> data = context.Employees;
             //if (!string.IsNullOrEmpty(searchTerm))
@@ -38,10 +38,19 @@ namespace AdvancedApp.Controllers
             //        ? await context.Employees.ToListAsync()
             //        : query(context, searchTerm)
             //);
+            //IEnumerable<Employee> data = context.Employees
+            //    .Include(e => e.OtherIdentity)
+            //    .OrderByDescending(e => e.LastUpdated)
+            //    .ToArray();
             IEnumerable<Employee> data = context.Employees
-                .Include(e => e.OtherIdentity)
-                .OrderByDescending(e => e.LastUpdated)
-                .ToArray();
+                .FromSql($@"SELECT * FROM 
+                           Employees 
+                           WHERE SoftDeleted = 0 AND Salary > {salary}
+                           ")
+                 .Include(e => e.OtherIdentity)
+                 .OrderByDescending(e => e.Salary)
+                 .OrderByDescending(e => e.LastUpdated).ToArray();
+
             //ViewBag.Secondaries = context.Set<SecondaryIdentity>();
             ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
 

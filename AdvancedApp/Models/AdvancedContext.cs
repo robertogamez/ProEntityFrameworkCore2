@@ -18,7 +18,8 @@ namespace AdvancedApp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>().HasQueryFilter(e => !e.SoftDeleted);
+            modelBuilder.Entity<Employee>()
+                .HasQueryFilter(e => !e.SoftDeleted);
 
             modelBuilder.Entity<Employee>().Ignore(e => e.Id);
             modelBuilder.Entity<Employee>().HasKey(e => new
