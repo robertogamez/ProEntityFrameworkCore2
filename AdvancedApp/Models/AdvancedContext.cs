@@ -41,7 +41,9 @@ namespace AdvancedApp.Models
                 .HasDefaultValue(new DateTime(2019, 12, 12));
 
             modelBuilder.Entity<Employee>()
-                .Property(e => e.RowVersion).IsRowVersion();
+                .Ignore(e => e.RowVersion);
+                //.Property(e => e.RowVersion);
+                //.IsRowVersion();
 
             //modelBuilder.Entity<Employee>()
             //    .Property(e => e.Id).ForSqlServerUseSequenceHiLo();

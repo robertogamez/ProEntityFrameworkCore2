@@ -34,5 +34,19 @@ namespace AdvancedApp.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public IActionResult DeleteAll()
+        {
+            context.Database.ExecuteSqlCommand("EXECUTE PurgeSoftDelete");
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult RestoreAll()
+        {
+            context.Database.ExecuteSqlCommand("EXECUTE RestoreSoftDelete");
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

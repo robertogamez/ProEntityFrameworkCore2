@@ -42,16 +42,39 @@ namespace AdvancedApp.Controllers
             //    .Include(e => e.OtherIdentity)
             //    .OrderByDescending(e => e.LastUpdated)
             //    .ToArray();
-            IEnumerable<Employee> data = context.Employees
-                .FromSql($@"SELECT * FROM 
-                           Employees 
-                           WHERE SoftDeleted = 0 AND Salary > {salary}
-                           ")
-                 .Include(e => e.OtherIdentity)
-                 .OrderByDescending(e => e.Salary)
-                 .OrderByDescending(e => e.LastUpdated).ToArray();
+            //IEnumerable<Employee> data = context.Employees
+            //    .FromSql($@"SELECT * FROM 
+            //               Employees 
+            //               WHERE SoftDeleted = 0 AND Salary > {salary}
+            //               ")
+            //     .Include(e => e.OtherIdentity)
+            //     .OrderByDescending(e => e.Salary)
+            //     .OrderByDescending(e => e.LastUpdated).ToArray();
 
-            //ViewBag.Secondaries = context.Set<SecondaryIdentity>();
+            ////ViewBag.Secondaries = context.Set<SecondaryIdentity>();
+            //ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
+
+            //IEnumerable<Employee> data = context.Employees
+            //    .FromSql($"Execute GetBySalary @SalaryFilter={salary}")
+            //    .IgnoreQueryFilters();
+
+            //IEnumerable<Employee> data = context.Employees
+            //    .FromSql($@"SELECT * FROM NotDeletedView
+            //                WHERE Salary > {salary}")
+            //    .Include(e => e.OtherIdentity)
+            //    .OrderByDescending(e => e.Salary)
+            //    .OrderByDescending(e => e.LastUpdated)
+            //    .IgnoreQueryFilters()
+            //    .ToArray();
+
+            IEnumerable<Employee> data = context.Employees
+                .FromSql($@"SELECT * from GetSalaryTable({salary})")
+                .Include(e => e.OtherIdentity)
+                //.OrderByDescending(e => e.Salary)
+                .OrderByDescending(e => e.LastUpdated)
+                .IgnoreQueryFilters()
+                .ToArray();
+
             ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
 
             return View(data);
