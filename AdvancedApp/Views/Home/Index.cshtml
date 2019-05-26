@@ -12,6 +12,7 @@
             <th>Family Name</th>
             <th>Salary</th>
             <th>Other Name</th>
+            <th>Generated</th>
             @*<th>In Use</th>
                 <th>Last Updated</th>*@
             <th></th>
@@ -27,6 +28,7 @@
                 <td>@e.FamilyName</td>
                 <td>@e.Salary</td>
                 <td>@(e.OtherIdentity?.Name ?? "(None)")</td>
+                <td>@e.GenratedValue</td>
                 @*<td>@(e.OtherIdentity?.InActiveUse.ToString() ?? "(N/A)")</td>
                     <td>@e.LastUpdated.ToLocalTime()</td>*@
                 <td class="text-right">

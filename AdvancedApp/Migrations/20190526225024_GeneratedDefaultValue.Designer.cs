@@ -4,20 +4,21 @@ using AdvancedApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    partial class AdvancedContextModelSnapshot : ModelSnapshot
+    [Migration("20190526225024_GeneratedDefaultValue")]
+    partial class GeneratedDefaultValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("Relational:Sequence:.ReferenceSequence", "'ReferenceSequence', '', '100', '2', '', '', 'Int32', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("AdvancedApp.Models.Employee", b =>
@@ -29,8 +30,8 @@ namespace AdvancedApp.Migrations
                     b.Property<string>("FamilyName");
 
                     b.Property<string>("GenratedValue")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SUBSTRING(FirstName, 1, 1) + FamilyName PERSISTED");
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAdd()
@@ -42,8 +43,6 @@ namespace AdvancedApp.Migrations
                     b.Property<bool>("SoftDeleted");
 
                     b.HasKey("SSN", "FirstName", "FamilyName");
-
-                    b.HasIndex("GenratedValue");
 
                     b.ToTable("Employees");
                 });

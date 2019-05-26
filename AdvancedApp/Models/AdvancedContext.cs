@@ -40,10 +40,20 @@ namespace AdvancedApp.Models
                 .Property<DateTime>("LastUpdated")
                 .HasDefaultValue(new DateTime(2019, 12, 12));
 
+            modelBuilder.HasSequence<int>("ReferenceSequence")
+                .StartsAt(100)
+                .IncrementsBy(2);
+
             modelBuilder.Entity<Employee>()
-                .Ignore(e => e.RowVersion);
-                //.Property(e => e.RowVersion);
-                //.IsRowVersion();
+                .Ignore(e => e.RowVersion)
+                .Property(e => e.GenratedValue)
+                .HasComputedColumnSql(@"SUBSTRING(FirstName, 1, 1) + FamilyName PERSISTED");
+            //.HasDefaultValueSql(@"'REFERENCE_'
+            //        + CONVERT(varchar, NEXT VALUE FOR ReferenceSequence)");
+            //.Property(e => e.RowVersion);
+            //.IsRowVersion();
+
+            modelBuilder.Entity<Employee>().HasIndex(e => e.GenratedValue);
 
             //modelBuilder.Entity<Employee>()
             //    .Property(e => e.Id).ForSqlServerUseSequenceHiLo();

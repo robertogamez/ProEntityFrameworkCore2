@@ -66,14 +66,20 @@ namespace AdvancedApp.Controllers
             //    .OrderByDescending(e => e.LastUpdated)
             //    .IgnoreQueryFilters()
             //    .ToArray();
+            IQueryable<Employee> query = context.Employees.Include(e => e.OtherIdentity);
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(e => EF.Functions.Like(e.GenratedValue, searchTerm));
+            }
+            IEnumerable<Employee> data = query.ToArray();
 
-            IEnumerable<Employee> data = context.Employees
-                .FromSql($@"SELECT * from GetSalaryTable({salary})")
-                .Include(e => e.OtherIdentity)
-                //.OrderByDescending(e => e.Salary)
-                .OrderByDescending(e => e.LastUpdated)
-                .IgnoreQueryFilters()
-                .ToArray();
+            //IEnumerable<Employee> data = context.Employees
+            //    //.FromSql($@"SELECT * from GetSalaryTable({salary})")
+            //    .Include(e => e.OtherIdentity)
+            //    //.OrderByDescending(e => e.Salary)
+            //    .OrderByDescending(e => e.LastUpdated)
+            //    .IgnoreQueryFilters()
+            //    .ToArray();
 
             ViewBag.Secondaries = data.Select(e => e.OtherIdentity);
 
