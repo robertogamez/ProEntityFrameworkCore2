@@ -29,8 +29,7 @@ namespace AdvancedApp.Migrations
                     b.Property<string>("FamilyName");
 
                     b.Property<string>("GenratedValue")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SUBSTRING(FirstName, 1, 1) + FamilyName PERSISTED");
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAdd()
@@ -42,8 +41,6 @@ namespace AdvancedApp.Migrations
                     b.Property<bool>("SoftDeleted");
 
                     b.HasKey("SSN", "FirstName", "FamilyName");
-
-                    b.HasIndex("GenratedValue");
 
                     b.ToTable("Employees");
                 });

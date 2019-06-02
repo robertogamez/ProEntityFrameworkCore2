@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvancedApp.Migrations
 {
     [DbContext(typeof(AdvancedContext))]
-    [Migration("20190526232514_ComputedColumn")]
-    partial class ComputedColumn
+    [Migration("20190602045422_AutomaticallyGenerated")]
+    partial class AutomaticallyGenerated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,8 +31,7 @@ namespace AdvancedApp.Migrations
                     b.Property<string>("FamilyName");
 
                     b.Property<string>("GenratedValue")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasComputedColumnSql("SUBSTRING(FirstName, 1, 1) + FamilyName PERSISTED");
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAdd()
@@ -44,8 +43,6 @@ namespace AdvancedApp.Migrations
                     b.Property<bool>("SoftDeleted");
 
                     b.HasKey("SSN", "FirstName", "FamilyName");
-
-                    b.HasIndex("GenratedValue");
 
                     b.ToTable("Employees");
                 });

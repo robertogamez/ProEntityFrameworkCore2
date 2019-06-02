@@ -46,14 +46,14 @@ namespace AdvancedApp.Models
 
             modelBuilder.Entity<Employee>()
                 .Ignore(e => e.RowVersion)
-                .Property(e => e.GenratedValue)
-                .HasComputedColumnSql(@"SUBSTRING(FirstName, 1, 1) + FamilyName PERSISTED");
+                .Property(e => e.GenratedValue);
+                //.HasComputedColumnSql(@"SUBSTRING(FirstName, 1, 1) + FamilyName PERSISTED");
             //.HasDefaultValueSql(@"'REFERENCE_'
             //        + CONVERT(varchar, NEXT VALUE FOR ReferenceSequence)");
             //.Property(e => e.RowVersion);
             //.IsRowVersion();
 
-            modelBuilder.Entity<Employee>().HasIndex(e => e.GenratedValue);
+            //modelBuilder.Entity<Employee>().HasIndex(e => e.GenratedValue);
 
             //modelBuilder.Entity<Employee>()
             //    .Property(e => e.Id).ForSqlServerUseSequenceHiLo();
@@ -62,6 +62,9 @@ namespace AdvancedApp.Models
             //    .HasIndex(e => e.SSN).HasName("SSNIndex").IsUnique();
 
             //modelBuilder.Entity<Employee>().HasAlternateKey(e => e.SSN);
+
+            modelBuilder.Entity<Employee>().Property(e => e.GenratedValue)
+                .ValueGeneratedOnAddOrUpdate();
 
             modelBuilder.Entity<SecondaryIdentity>()
                 .HasOne(s => s.PrimaryIdentity)
