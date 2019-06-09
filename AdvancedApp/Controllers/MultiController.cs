@@ -27,21 +27,33 @@ namespace AdvancedApp.Controllers
         [HttpPost]
         public ActionResult UpdateAll(Employee[] employees)
         {
-            foreach (Employee employee in employees)
-            {
-                try
-                {
-                    advancedContext.Update(employee);
-                    advancedContext.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    advancedContext.Entry(employee).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
-                }
-            }
+            //foreach (Employee employee in employees)
+            //{
+            //    try
+            //    {
+            //        advancedContext.Update(employee);
+            //        advancedContext.SaveChanges();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        advancedContext.Entry(employee).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+            //    }
+            //}
             //advancedContext.UpdateRange(employees);
 
             //advancedContext.SaveChanges();
+            advancedContext.Database.BeginTransaction();
+
+            try
+            {
+                advancedContext.UpdateRange(employees);
+                advancedContext.SaveChanges();
+                advancedContext.Database.CommitTransaction();
+            }
+            catch (Exception ex)
+            {
+                advancedContext.Database.RollbackTransaction();
+            }
 
             return RedirectToAction(nameof(Index));
         }
